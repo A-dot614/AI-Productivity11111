@@ -152,7 +152,7 @@ class AIAssistantService
         $tasks = $user->tasks()
             ->active()
             ->whereNull('deleted_at')
-            ->orderByRaw("FIELD(priority, 'urgent', 'high', 'medium', 'low')")
+            ->orderByRaw("CASE priority WHEN 'urgent' THEN 0 WHEN 'high' THEN 1 WHEN 'medium' THEN 2 WHEN 'low' THEN 3 ELSE 4 END")
             ->limit(15)
             ->get(['id', 'title', 'priority', 'due_date', 'estimated_minutes']);
 
